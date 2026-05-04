@@ -1,0 +1,17 @@
+client_id = "de0d716540b0789d38b8269addf643d0"
+name = "chimes"
+application_url = "https://example.com"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+include_config_on_deploy = true
+
+[webhooks]
+api_version = "2026-07"
+
+[access_scopes]
+scopes = "write_content,write_files,write_products"
+
+[auth]
+redirect_urls = ["https://example.com/api/auth"]
