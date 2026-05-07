@@ -24,7 +24,10 @@ const shopify = shopifyApp({
   })(),
   authPathPrefix: "/auth",
   sessionStorage: new PrismaSessionStorage(prisma),
-  distribution: AppDistribution.AppStore,
+  distribution:
+    process.env.SHOPIFY_DISTRIBUTION === "single_merchant"
+      ? AppDistribution.SingleMerchant
+      : AppDistribution.AppStore,
   future: {
     expiringOfflineAccessTokens: true,
   },
