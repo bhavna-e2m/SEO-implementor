@@ -1,12 +1,26 @@
 import { authenticate } from "../shopify.server";
 
 export const action = async ({ request }: { request: Request }) => {
-  const { admin } = await authenticate.admin(request);
   const formData = await request.formData();
   const intent = formData.get("intent");
 
   if (intent !== "graphql") {
     return Response.json({ error: "Unsupported action." }, { status: 400 });
+  }
+
+  let admin: { graphql: (query: string, opts?: any) => Promise<Response> };
+  try {
+    ({ admin } = await authenticate.admin(request));
+  } catch (error: unknown) {
+    const message =
+      error instanceof Error ? error.message : "Unauthorized. Please re-open the app to reauthorize.";
+    return Response.json(
+      {
+        data: null,
+        errors: [{ message }],
+      },
+      { status: 401 },
+    );
   }
 
   const query = formData.get("query");

@@ -11,8 +11,17 @@ const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
   apiSecretKey: process.env.SHOPIFY_API_SECRET || "",
   apiVersion: ApiVersion.October25,
-  scopes: process.env.SCOPES?.split(","),
-  appUrl: process.env.SHOPIFY_APP_URL || "",
+  scopes: process.env.SCOPES?.split(",").filter(Boolean),
+  // Shopify install links/OAuth will fail if this is empty or mismatched.
+  // Prefer explicit SHOPIFY_APP_URL, fall back to common hosting envs.
+  appUrl: (() => {
+    const explicit = process.env.SHOPIFY_APP_URL || process.env.APP_URL;
+    if (explicit) return explicit;
+
+    const vercelUrl = process.env.VERCEL_URL;
+    if (!vercelUrl) return "";
+    return vercelUrl.startsWith("http") ? vercelUrl : `https://${vercelUrl}`;
+  })(),
   authPathPrefix: "/auth",
   sessionStorage: new PrismaSessionStorage(prisma),
   distribution: AppDistribution.AppStore,

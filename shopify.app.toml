@@ -1,17 +1,22 @@
-client_id = "de0d716540b0789d38b8269addf643d0"
-name = "chimes"
-application_url = "https://example.com"
-embedded = true
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-[build]
-automatically_update_urls_on_dev = true
-include_config_on_deploy = true
+client_id = "47a364df3904efd223c10461a171e477"
+name = "SEO Implementor"
+application_url = "https://seo-implementor.vercel.app"
+embedded = true
 
 [webhooks]
 api_version = "2026-07"
 
 [access_scopes]
-scopes = "write_content,write_files,write_products"
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_users"
 
 [auth]
-redirect_urls = ["https://example.com/api/auth"]
+redirect_urls = [
+  "https://seo-implementor.vercel.app/auth/callback",
+  "https://seo-implementor.vercel.app/auth/session-token"
+]
+
+[build]
+automatically_update_urls_on_dev = true
